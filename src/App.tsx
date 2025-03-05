@@ -1,13 +1,13 @@
 // import './App.css'
 
-import CalenderComponent from "./components/CalenderComponent";
-import FormComponent from "./components/FormComponet";
+import LoginPage from "./components/LoginPage";
+
+
 
 function App() {
   return (
     <div className="d-flex justify-content-around w-100 align-items-center vh-100">
-      <CalenderComponent />
-      <FormComponent />
+  <LoginPage/>
     </div>
   );
 }
