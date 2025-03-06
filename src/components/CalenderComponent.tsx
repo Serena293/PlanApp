@@ -1,16 +1,19 @@
 import { useState } from "react";
-import "../assets/CalendarComponent.css"
+import "../assets/CalendarComponent.css";
+import ModalComponent from '../components/ModalComponet'
+
 
 const monthNames: string[] = [
-  "January", "February", "March", "April", "May", "June", 
+  "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
 
 const daysOfTheWeek: string[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-const CalendarComponent = ({ taskDates = []}: { taskDates?: string[] }) => {
+const CalendarComponent = ({ taskDates = [] }: { taskDates?: string[]}) => {
   const now = new Date();
   const [currentDate, setCurrentDate] = useState<Date>(now);
+  const [modalShow, setModalShow] = useState(false);
 
   const today: number = now.getDate();
   const currentMonth: number = now.getMonth();
@@ -41,9 +44,16 @@ const CalendarComponent = ({ taskDates = []}: { taskDates?: string[] }) => {
       const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, "0")}-${String(i).padStart(2, "0")}`;
 
       days.push(
-        <div key={i} className={`day-container ${isToday ? "today" : ""}`} data-date={dateStr}>
+        <div
+          key={i}
+          className={`day-container ${isToday ? "today" : ""}`}
+          data-date={dateStr}
+          onClick={() => {
+            // Show the modal only if it's not already visible
+            if (!modalShow) setModalShow(true);
+          }}
+        >
           {i}
-          {/* Show dot if the date is in taskDates */}
           {taskDates.includes(dateStr) && <span className="dot"></span>}
         </div>
       );
@@ -65,6 +75,9 @@ const CalendarComponent = ({ taskDates = []}: { taskDates?: string[] }) => {
         ))}
         {generateCalendar()}
       </div>
+
+      {/* Modal component */}
+      <ModalComponent show={modalShow} onHide={() => setModalShow(false)} />
     </div>
   );
 };

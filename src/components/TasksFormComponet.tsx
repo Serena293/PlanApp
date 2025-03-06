@@ -4,8 +4,18 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
+
+export  interface Task {
+    id: string; // Temporary unique ID
+    task: string;
+    date: string;
+    isPostIt: boolean;
+    details: string;
+  }
 
 const TasksFormComponent = () => {
+  const [idTask, setIdTask] = useState("")
   const [taskName, setTaskName] = useState("");
   const [date, setDate] = useState("");
   const [isPostIt, setIsPostIt] = useState(false);
@@ -26,13 +36,10 @@ const TasksFormComponent = () => {
   const handleDetailsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDetails(e.target.value);
   };
-
-  interface Task {
-    task: string;
-    date: string;
-    isPostIt: boolean;
-    details: string;
-  }
+  
+ const handleIdTask = (e:React.ChangeEvent<HTMLInputElement>) => {
+  setIdTask(e.target.value);
+ }
 
   const [tasks, setTasks] = useState<Task[]>([]);
 
@@ -40,6 +47,7 @@ const TasksFormComponent = () => {
     e.preventDefault();
 
     const task: Task = {
+      id: uuidv4(), // Temporary unique ID
       task: taskName,
       date,
       isPostIt,
@@ -52,6 +60,7 @@ const TasksFormComponent = () => {
 
     // Save the updated tasks array to LocalStorage
     localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    setIdTask("")
     setTaskName("");
     setDate("");
     setIsPostIt(false);
@@ -131,4 +140,4 @@ const TasksFormComponent = () => {
   );
 };
 
-export default TasksFormComponent;
+export default TasksFormComponent

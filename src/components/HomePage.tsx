@@ -3,6 +3,9 @@ import CalendarComponent from "../components/CalenderComponent";
 import TasksFormComponent from "./TasksFormComponet";
 import Board from "./Board";
 import "../assets/HomePage.css";
+// import { ModalProps } from "../components/ModalComponet";
+
+
 
 function HomePage() {
   const [taskDates, setTaskDates] = useState<string[]>([]);
@@ -15,10 +18,11 @@ function HomePage() {
     const tasks = retriveTasks();
     const dates = tasks.map((task) => task.date); 
     setTaskDates(dates);
-  }, [taskDates]);
+  }, []);
   //re-render the page every time a task is added, there are better approches
   
 
+ 
   return (
     <section className="w-100 vh-100 mt-5 d-flex flex-column">
       <div className="d-flex justify-content-around w-100">
