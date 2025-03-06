@@ -1,0 +1,10 @@
+LoginPage: Login form and basic calendar, show the current date
+HomePage: Calendar showing a dot for each day that has a task assigned, each day has a modal assigned, current date is highlighted.
+          Form to add "post-it" on a bacheca, each post-it can be delete, modified, checked as done.
+          The taskes shows in the modal have more details, they can be a list or notes.
+          The form to add tasks or post it is based on conditional randering: if the post-it checkbox is checked it shows fewer options.
+
+          A bacheca that shows all the post-it
+
+          Phone book to save contacts and possibility to sent emails.
+          

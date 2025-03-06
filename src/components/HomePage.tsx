@@ -1,17 +1,42 @@
+import CalendarComponent from "../components/CalenderComponent"
+// import FormComponent from "./FormComponet"
+import { useState } from "react";
+import TasksFormComponent from "./TasksFormComponet";
 
-import FormComponent from "./FormComponet"
+function HomePage() {
+  const [task, setTask] = useState(""); 
+  const [date, setDate] = useState("");
+  
 
-const HomePage = () => {
+return(
+// Salvare le task --> Form componente
+// Aggiungere dot
+//Modale dettagli
+//Creare componente bacheca
 
-    <FormComponent
-    formName="Add a task"
-    firstLabel="Task name"
-    secondLabel="Date"
-    firstPlaceholder=""
-    secondPlaceholder=""
+  <>
+<CalendarComponent/>
+<TasksFormComponent/>
+
+{/* <FormComponent
+      formName="Add Task"
+      controlFirstId="task"
+      firstLabel="Task"
+      firstPlaceholder="Enter your task"
+      controlSecondId="date"
+      secondLabel="Date"
+      secondInputType="date"
+      secondPlaceholder=""
+      btnText="Save Task"
+      firstValue={task}
+      secondValue={date}
+      setFirstValue={setTask} 
+      setSecondValue={setDate} 
+    />*/}
     
-    btnText="Save"
-  />
+    </> 
+
+)
 }
 
 export default HomePage

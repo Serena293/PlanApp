@@ -2,13 +2,15 @@ import { useState } from "react";
 import "../assets/CalendarComponent.css"
 
 const monthNames: string[] = [
-  "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", 
-  "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"
+  "January", "February", "March", "April", "May", "June", 
+  "July", "August", "September", "October", "November", "December"
 ];
 
-const daysOfTheWeek: string[] = ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"];
 
-const Calendar: React.FC = () => {
+const daysOfTheWeek: string[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+
+const CalendarComponent: React.FC = () => {
   const now = new Date();
   const [currentDate, setCurrentDate] = useState<Date>(now);
 
@@ -68,4 +70,4 @@ const Calendar: React.FC = () => {
   );
 };
 
-export default Calendar;
+export default CalendarComponent;
