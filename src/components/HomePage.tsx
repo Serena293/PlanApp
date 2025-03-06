@@ -15,7 +15,8 @@ function HomePage() {
     const tasks = retriveTasks();
     const dates = tasks.map((task) => task.date); 
     setTaskDates(dates);
-  }, []);
+  }, [taskDates]);
+  //re-render the page every time a task is added, there are better approches
   
 
   return (

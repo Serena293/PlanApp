@@ -8,7 +8,7 @@ const monthNames: string[] = [
 
 const daysOfTheWeek: string[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-const CalendarComponent = ({ taskDates }: { taskDates: string[] }) => {
+const CalendarComponent = ({ taskDates = []}: { taskDates?: string[] }) => {
   const now = new Date();
   const [currentDate, setCurrentDate] = useState<Date>(now);
 

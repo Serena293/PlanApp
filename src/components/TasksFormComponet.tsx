@@ -52,8 +52,12 @@ const TasksFormComponent = () => {
 
     // Save the updated tasks array to LocalStorage
     localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    setTaskName("");
+    setDate("");
+    setIsPostIt(false);
+    setDetails("");
 
-    console.log(task); 
+    console.log(task);
   };
 
   return (
@@ -95,17 +99,15 @@ const TasksFormComponent = () => {
           </Col>
         </Form.Group>
 
-        <Form.Group
-          as={Row}
-          className="mb-3"
-          controlId="formHorizontalCheck"
-        >
-          <Col sm={12} className="d-flex justify-content-between align-items-center">
-            <Form.Label className="mb-0">Do you want to create a post it?</Form.Label>
-            <Form.Check
-              checked={isPostIt}
-              onChange={handleCheckboxChange}
-            />
+        <Form.Group as={Row} className="mb-3" controlId="formHorizontalCheck">
+          <Col
+            sm={12}
+            className="d-flex justify-content-between align-items-center"
+          >
+            <Form.Label className="mb-0">
+              Do you want to create a post it?
+            </Form.Label>
+            <Form.Check checked={isPostIt} onChange={handleCheckboxChange} />
           </Col>
         </Form.Group>
 
