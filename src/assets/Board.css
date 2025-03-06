@@ -1,0 +1,24 @@
+.postIt-board{
+    background-color: #c49a6c; /* Cork color */
+    background-image: url("https://www.transparenttextures.com/patterns/cork-board.png"); /* Cork texture */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 800px;
+    min-height: 200px;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.no-tasks-message {
+    font-family: 'Comic Sans ';
+    font-size: 2em;
+    font-weight: bold;
+    color: #484030;
+    text-align: center;
+    width: 100%;
+  }

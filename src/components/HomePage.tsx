@@ -1,42 +1,35 @@
-import CalendarComponent from "../components/CalenderComponent"
-// import FormComponent from "./FormComponet"
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import CalendarComponent from "../components/CalenderComponent";
 import TasksFormComponent from "./TasksFormComponet";
+import Board from "./Board";
+import "../assets/HomePage.css";
 
 function HomePage() {
-  const [task, setTask] = useState(""); 
-  const [date, setDate] = useState("");
+  const [taskDates, setTaskDates] = useState<string[]>([]);
+
+  const retriveTasks = (): { date: string; task: string }[] => {
+    const tasks = JSON.parse(localStorage.getItem("tasks") || "[]") as { date: string; task: string }[];
+    return tasks; 
+  };
+  useEffect(() => {
+    const tasks = retriveTasks();
+    const dates = tasks.map((task) => task.date); 
+    setTaskDates(dates);
+  }, []);
   
 
-return(
-// Salvare le task --> Form componente
-// Aggiungere dot
-//Modale dettagli
-//Creare componente bacheca
-
-  <>
-<CalendarComponent/>
-<TasksFormComponent/>
-
-{/* <FormComponent
-      formName="Add Task"
-      controlFirstId="task"
-      firstLabel="Task"
-      firstPlaceholder="Enter your task"
-      controlSecondId="date"
-      secondLabel="Date"
-      secondInputType="date"
-      secondPlaceholder=""
-      btnText="Save Task"
-      firstValue={task}
-      secondValue={date}
-      setFirstValue={setTask} 
-      setSecondValue={setDate} 
-    />*/}
-    
-    </> 
-
-)
+  return (
+    <section className="w-100 vh-100 mt-5 d-flex flex-column">
+      <div className="d-flex justify-content-around w-100">
+        {/* Pass taskDates to CalendarComponent */}
+        <CalendarComponent taskDates={taskDates} />
+        <TasksFormComponent />
+      </div>
+      <div className="w-100">
+        <Board />
+      </div>
+    </section>
+  );
 }
 
-export default HomePage
+export default HomePage;

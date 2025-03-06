@@ -6,11 +6,9 @@ const monthNames: string[] = [
   "July", "August", "September", "October", "November", "December"
 ];
 
-
 const daysOfTheWeek: string[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-
-const CalendarComponent: React.FC = () => {
+const CalendarComponent = ({ taskDates }: { taskDates: string[] }) => {
   const now = new Date();
   const [currentDate, setCurrentDate] = useState<Date>(now);
 
@@ -40,9 +38,13 @@ const CalendarComponent: React.FC = () => {
     // Days of the month
     for (let i = 1; i <= daysInMonth; i++) {
       const isToday: boolean = i === today && currentDate.getMonth() === currentMonth && currentDate.getFullYear() === currentYear;
+      const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, "0")}-${String(i).padStart(2, "0")}`;
+
       days.push(
-        <div key={i} className={`day-container ${isToday ? "today" : ""}`} data-date={`${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, "0")}-${String(i).padStart(2, "0")}`}>
+        <div key={i} className={`day-container ${isToday ? "today" : ""}`} data-date={dateStr}>
           {i}
+          {/* Show dot if the date is in taskDates */}
+          {taskDates.includes(dateStr) && <span className="dot"></span>}
         </div>
       );
     }
@@ -58,12 +60,9 @@ const CalendarComponent: React.FC = () => {
         <span className="next-arrow" onClick={() => changeMonth(1)}>→</span>
       </div>
       <div className="calendar-grid">
-      {/* <div className=""> */}
         {daysOfTheWeek.map((day) => (
           <div key={day} className="weekday">{day}</div>
         ))}
-      {/* </div> */}
-      
         {generateCalendar()}
       </div>
     </div>
