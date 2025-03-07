@@ -5,6 +5,7 @@ interface PostItProps {
   tasks: Task[];
   onDelete: (taskId: string) => void;
   onModify: (taskId: string) => void;
+  editingTask: Task | null;
 }
 
 const PostItComponent: React.FC<PostItProps> = ({ tasks = [], onDelete, onModify }) => {

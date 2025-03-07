@@ -33,7 +33,6 @@ const HomePage = () => {
     setTaskToEdit(null);
   };
 
-  ///
   const handleDelete = (taskId: string) => {
     const updatedTasks = tasks.filter((task) => task.id !== taskId);
     setTasks(updatedTasks);
@@ -66,7 +65,12 @@ const HomePage = () => {
         <TasksFormComponent onAddTask={saveTask} />
       </div>
       <div className="w-100">
-        <Board tasks={tasks} />
+        <Board 
+        tasks={tasks} 
+        onDelete={handleDelete}
+        onModify={handleModify}
+        onSave={()=>{}}
+        />
       </div>
 
       <ModalComponent

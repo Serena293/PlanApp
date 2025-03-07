@@ -3,7 +3,12 @@ import "../assets/Board.css";
 import PostItComponent from "../components/PostItComponent";
 import { Task } from "./TasksFormComponent";
 
-const Board: React.FC<{ tasks: Task[] }> = ({ tasks }) => {
+const Board: React.FC<{
+  tasks: Task[];                   // List of tasks passed as props
+  onDelete: (taskId: string) => void;   // Delete handler function
+  onModify: (taskId: string) => void;   // Modify handler function
+  onSave: (modifiedTask: Task) => void; // Save handler function
+}> = ({ tasks, onDelete, onModify, onSave }) =>  {
   // Filter out the tasks that are marked as PostIts
   const postItTasks = tasks.filter((task) => task.isPostIt === true);
 
@@ -22,8 +27,8 @@ const Board: React.FC<{ tasks: Task[] }> = ({ tasks }) => {
         <PostItComponent
           key={task.id}        // Use task's ID as the key for each component
           tasks={[task]}       // Pass the task as an array to PostItComponent
-          onDelete={() => {}}  // Implement onDelete function
-          onModify={() => {}}  // Implement onModify function
+          onDelete={onDelete}       // Pass onDelete function
+          onModify={onModify}  // Implement onModify function
           // onSave={() => {}}    // Implement onSave function
         />
       ))}
