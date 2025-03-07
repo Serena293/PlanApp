@@ -1,7 +1,6 @@
 import { useState } from "react";
 import "../assets/CalendarComponent.css";
-import ModalComponent from '../components/ModalComponet'
-
+import ModalComponent from '../components/ModalComponent'
 
 const monthNames: string[] = [
   "January", "February", "March", "April", "May", "June",
@@ -10,10 +9,9 @@ const monthNames: string[] = [
 
 const daysOfTheWeek: string[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-const CalendarComponent = ({ taskDates = [] }: { taskDates?: string[]}) => {
+const CalendarComponent = ({ taskDates = [], onDateClick }: { taskDates?: string[], onDateClick: (date: string) => void }) => {
   const now = new Date();
   const [currentDate, setCurrentDate] = useState<Date>(now);
-  const [modalShow, setModalShow] = useState(false);
 
   const today: number = now.getDate();
   const currentMonth: number = now.getMonth();
@@ -49,8 +47,8 @@ const CalendarComponent = ({ taskDates = [] }: { taskDates?: string[]}) => {
           className={`day-container ${isToday ? "today" : ""}`}
           data-date={dateStr}
           onClick={() => {
-            // Show the modal only if it's not already visible
-            if (!modalShow) setModalShow(true);
+            // Pass selected date to the parent component (HomePage)
+            onDateClick(dateStr); // Trigger the onDateClick function passed as a prop
           }}
         >
           {i}
@@ -75,9 +73,6 @@ const CalendarComponent = ({ taskDates = [] }: { taskDates?: string[]}) => {
         ))}
         {generateCalendar()}
       </div>
-
-      {/* Modal component */}
-      <ModalComponent show={modalShow} onHide={() => setModalShow(false)} />
     </div>
   );
 };

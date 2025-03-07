@@ -6,138 +6,79 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 
-export  interface Task {
-    id: string; // Temporary unique ID
-    task: string;
-    date: string;
-    isPostIt: boolean;
-    details: string;
-  }
+export interface Task {
+  id: string;
+  task: string;
+  date: string;
+  isPostIt: boolean;
+  details: string;
+}
 
-const TasksFormComponent = () => {
-  const [idTask, setIdTask] = useState("")
+interface TasksFormComponentProps {
+  onAddTask: (task: Task) => void;
+}
+
+const TasksFormComponent = ({ onAddTask }: TasksFormComponentProps) => {
   const [taskName, setTaskName] = useState("");
   const [date, setDate] = useState("");
   const [isPostIt, setIsPostIt] = useState(false);
   const [details, setDetails] = useState("");
 
-  const handleTaskNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTaskName(e.target.value);
-  };
-
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDate(e.target.value);
-  };
-
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsPostIt(e.target.checked);
-  };
-
-  const handleDetailsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDetails(e.target.value);
-  };
-  
- const handleIdTask = (e:React.ChangeEvent<HTMLInputElement>) => {
-  setIdTask(e.target.value);
- }
-
-  const [tasks, setTasks] = useState<Task[]>([]);
-
   const saveTask = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const task: Task = {
-      id: uuidv4(), // Temporary unique ID
+    const newTask: Task = {
+      id: uuidv4(),
       task: taskName,
       date,
       isPostIt,
       details,
     };
 
-    // Update the state with the new task
-    const updatedTasks = [...tasks, task];
-    setTasks(updatedTasks);
+    onAddTask(newTask); // Call the function from HomePage
 
-    // Save the updated tasks array to LocalStorage
-    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-    setIdTask("")
+    // Reset form fields
     setTaskName("");
     setDate("");
     setIsPostIt(false);
     setDetails("");
-
-    console.log(task);
   };
 
   return (
-    <>
-      <Form onSubmit={saveTask}>
-        <Form.Group
-          as={Row}
-          className="mb-3 d-flex flex-column"
-          controlId="formHorizontalText"
-        >
-          <Form.Label column sm={2}>
-            Task:
-          </Form.Label>
-          <Col sm={10}>
-            <Form.Control
-              type="text"
-              placeholder="Enter task"
-              value={taskName}
-              onChange={handleTaskNameChange}
-            />
-          </Col>
-        </Form.Group>
+    <Form onSubmit={saveTask}>
+      <Form.Group as={Row} className="mb-3 d-flex flex-column" controlId="formHorizontalText">
+        <Form.Label column sm={2}>Task:</Form.Label>
+        <Col sm={10}>
+          <Form.Control type="text" placeholder="Enter task" value={taskName} onChange={(e) => setTaskName(e.target.value)} />
+        </Col>
+      </Form.Group>
 
-        <Form.Group
-          as={Row}
-          className="mb-3 d-flex flex-column"
-          controlId="formHorizontalDate"
-        >
-          <Form.Label column sm={2}>
-            Date:
-          </Form.Label>
-          <Col sm={10}>
-            <Form.Control
-              type="date"
-              value={date}
-              onChange={handleDateChange}
-              min={new Date().toISOString().split("T")[0]}
-            />
-          </Col>
-        </Form.Group>
+      <Form.Group as={Row} className="mb-3 d-flex flex-column" controlId="formHorizontalDate">
+        <Form.Label column sm={2}>Date:</Form.Label>
+        <Col sm={10}>
+          <Form.Control type="date" value={date} onChange={(e) => setDate(e.target.value)} min={new Date().toISOString().split("T")[0]} />
+        </Col>
+      </Form.Group>
 
-        <Form.Group as={Row} className="mb-3" controlId="formHorizontalCheck">
-          <Col
-            sm={12}
-            className="d-flex justify-content-between align-items-center"
-          >
-            <Form.Label className="mb-0">
-              Do you want to create a post it?
-            </Form.Label>
-            <Form.Check checked={isPostIt} onChange={handleCheckboxChange} />
-          </Col>
-        </Form.Group>
+      <Form.Group as={Row} className="mb-3" controlId="formHorizontalCheck">
+        <Col sm={12} className="d-flex justify-content-between align-items-center">
+          <Form.Label className="mb-0">Do you want to create a post-it?</Form.Label>
+          <Form.Check checked={isPostIt} onChange={(e) => setIsPostIt(e.target.checked)} />
+        </Col>
+      </Form.Group>
 
-        <InputGroup className="mb-3">
-          <InputGroup.Text>Details</InputGroup.Text>
-          <Form.Control
-            as="textarea"
-            value={details}
-            onChange={handleDetailsChange}
-            // disabled={isPostIt}
-          />
-        </InputGroup>
+      <InputGroup className="mb-3">
+        <InputGroup.Text>Details</InputGroup.Text>
+        <Form.Control as="textarea" value={details} onChange={(e) => setDetails(e.target.value)} />
+      </InputGroup>
 
-        <Form.Group as={Row} className="mb-3">
-          <Col sm={{ span: 10, offset: 2 }}>
-            <Button type="submit">Save</Button>
-          </Col>
-        </Form.Group>
-      </Form>
-    </>
+      <Form.Group as={Row} className="mb-3">
+        <Col sm={{ span: 10, offset: 2 }}>
+          <Button type="submit">Save</Button>
+        </Col>
+      </Form.Group>
+    </Form>
   );
 };
 
-export default TasksFormComponent
+export default TasksFormComponent;

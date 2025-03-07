@@ -1,13 +1,12 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { Task } from "../components/TasksFormComponet"; // Import Task type
+import { Task } from "../components/TasksFormComponet"; 
 
 export interface ModalProps {
   show: boolean;
   onHide: () => void;
   selectedDate: string | null;
   tasks: Task[];
-  onSave: (task: Task) => void;
   onDelete: (taskId: string) => void;
 }
 
@@ -34,11 +33,13 @@ const ModalComponent: React.FC<ModalProps> = ({ tasks = [], ...props }) => {
               <li key={task.id}>
                 <p>{task.task}</p>
                 {/* Add other task details here if needed */}
+                <Button onClick={() => props.onDelete(task.id)}>Delete Task</Button>
+                <Button>Modify</Button>
               </li>
             ))}
           </ul>
         ) : (
-          <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+          <p>No tasks for this day</p>
         )}
       </Modal.Body>
       <Modal.Footer>
