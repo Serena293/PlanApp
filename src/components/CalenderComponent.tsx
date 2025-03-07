@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "../assets/CalendarComponent.css";
-import ModalComponent from '../components/ModalComponent'
+// import ModalComponent from '../components/ModalComponent'
 
 const monthNames: string[] = [
   "January", "February", "March", "April", "May", "June",
@@ -26,7 +26,7 @@ const CalendarComponent = ({ taskDates = [], onDateClick }: { taskDates?: string
   };
 
   const generateCalendar = () => {
-    const firstDayIndex: number = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
+    const firstDayIndex: number = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0).getDay();
     const daysInMonth: number = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
 
     let days: JSX.Element[] = [];

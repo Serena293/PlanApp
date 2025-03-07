@@ -1,6 +1,6 @@
 // EditTaskForm.tsx
 import React, { useState, useEffect } from "react";
-import { Task } from "../components/TasksFormComponet";
+import { Task } from "./TasksFormComponent";
 
 interface EditTaskFormProps {
   task: Task | null;

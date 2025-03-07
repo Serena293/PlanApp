@@ -1,22 +1,22 @@
 import { useState, useEffect } from "react";
 import CalendarComponent from "../components/CalenderComponent";
-import TasksFormComponent, { Task } from "./TasksFormComponet";
+import TasksFormComponent, { Task } from "./TasksFormComponent";
 import Board from "./Board";
 import ModalComponent from "../components/ModalComponent";
 import "../assets/HomePage.css";
-// import EditTaskForm from "../components/EditTaskForm"
-const  HomePage =() => {
+
+const HomePage = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [selectedDate, setSelectedDate] = useState<string | null>(null); 
-   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
-   
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
+
   const retrieveTasks = (): Task[] => {
     return JSON.parse(localStorage.getItem("tasks") || "[]") as Task[];
   };
 
-   useEffect(() => {
+  useEffect(() => {
     setTasks(retrieveTasks());
-  }, []); 
+  }, []);
 
   const saveTask = (newTask: Task) => {
     const updatedTasks = [...tasks, newTask];
@@ -25,12 +25,12 @@ const  HomePage =() => {
   };
 
   const handleDateClick = (date: string) => {
-    setSelectedDate(date); 
+    setSelectedDate(date);
   };
 
   const handleCloseModal = () => {
-    setSelectedDate(null); 
-    setTaskToEdit(null)
+    setSelectedDate(null);
+    setTaskToEdit(null);
   };
 
   ///
@@ -53,34 +53,34 @@ const  HomePage =() => {
     );
     setTasks(updatedTasks);
     localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-    setTaskToEdit(null); // Close edit mode after saving
+    setTaskToEdit(null); 
   };
 
   return (
     <section className="w-100 vh-100 mt-5 d-flex flex-column">
-    <div className="d-flex justify-content-around w-100">
-      <CalendarComponent
-        taskDates={tasks.map(task => task.date)}
-        onDateClick={handleDateClick}
-      />
-      <TasksFormComponent onAddTask={saveTask} />
-    </div>
-    <div className="w-100">
-      <Board />
-    </div>
+      <div className="d-flex justify-content-around w-100">
+        <CalendarComponent
+          taskDates={tasks.map((task) => task.date)}
+          onDateClick={handleDateClick}
+        />
+        <TasksFormComponent onAddTask={saveTask} />
+      </div>
+      <div className="w-100">
+        <Board tasks={tasks} />
+      </div>
 
-    <ModalComponent
-      show={selectedDate !== null}
-      onHide={handleCloseModal}
-      selectedDate={selectedDate}
-      tasks={tasks}
-      onDelete={handleDelete}
-      onModify={handleModify}
-      onSave={handleSaveModifiedTask}
-      editingTask={taskToEdit}
-    />
-  </section>
+      <ModalComponent
+        show={selectedDate !== null}
+        onHide={handleCloseModal}
+        selectedDate={selectedDate}
+        tasks={tasks}
+        onDelete={handleDelete}
+        onModify={handleModify}
+        onSave={handleSaveModifiedTask}
+        editingTask={taskToEdit}
+      />
+    </section>
   );
-}
+};
 
 export default HomePage;

@@ -1,6 +1,8 @@
 // import './App.css'
 import HomePage from "./components/HomePage";
 // import LoginPage from "./components/LoginPage";
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 
 function App() {
   return (
