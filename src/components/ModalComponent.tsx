@@ -1,6 +1,8 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { Task } from "../components/TasksFormComponet"; 
+import { Task } from "../components/TasksFormComponet";
+import EditTaskForm from '../components/EditTaskForm';
+import { useState } from 'react';
 
 export interface ModalProps {
   show: boolean;
@@ -8,10 +10,12 @@ export interface ModalProps {
   selectedDate: string | null;
   tasks: Task[];
   onDelete: (taskId: string) => void;
+  onModify: (taskId: string) => void;
+  onSave: (modifiedTask: Task) => void;
+  editingTask: Task | null;
 }
 
-const ModalComponent: React.FC<ModalProps> = ({ tasks = [], ...props }) => {
-  // Filter tasks for the selected date
+const ModalComponent: React.FC<ModalProps> = ({ tasks = [], editingTask, ...props }) => {
   const filteredTasks = tasks.filter((task) => task.date === props.selectedDate);
 
   return (
@@ -27,19 +31,26 @@ const ModalComponent: React.FC<ModalProps> = ({ tasks = [], ...props }) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {filteredTasks.length > 0 ? (
-          <ul>
-            {filteredTasks.map((task) => (
-              <li key={task.id}>
-                <p>{task.task}</p>
-                {/* Add other task details here if needed */}
-                <Button onClick={() => props.onDelete(task.id)}>Delete Task</Button>
-                <Button>Modify</Button>
-              </li>
-            ))}
-          </ul>
+        {editingTask ? (
+          <EditTaskForm
+            task={editingTask}
+            onSave={props.onSave}
+            onCancel={props.onHide}
+          />
         ) : (
-          <p>No tasks for this day</p>
+          filteredTasks.length > 0 ? (
+            <ul>
+              {filteredTasks.map((task) => (
+                <li key={task.id}>
+                  <p>{task.task}</p>
+                  <Button onClick={() => props.onDelete(task.id)}>Delete Task</Button>
+                  <Button onClick={() => props.onModify(task.id)}>Modify</Button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No tasks for this day</p>
+          )
         )}
       </Modal.Body>
       <Modal.Footer>
