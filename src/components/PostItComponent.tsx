@@ -8,40 +8,43 @@ interface PostItProps {
   onModify: (taskId: string) => void;
   editingTask: Task | null;
 
+
   onSave: (modifiedTask: Task) => void;
-  // onCancel: () => void;
+  onCancel: () => void;
 }
 
 const PostItComponent: React.FC<PostItProps> = ({ tasks, onDelete, onModify, editingTask, onSave, onCancel }) => {
   // Filter out tasks that are marked as PostIts
   const postItTasks = tasks.filter((task) => task.isPostIt === true);
-   
-  console.log(editingTask);
+
+  // Remove duplicates based on task.id
+  // const uniquePostItTasks = postItTasks.filter((task, index, self) =>
+  //   index === self.findIndex((t) => t.id === task.id)
+  // );
 
   return (
     <>
-      {editingTask ?  (
-          <EditTaskForm
-            task={editingTask}
-            onSave={onSave}
-            onCancel={onCancel}
-          />
-        ) : (
-        postItTasks.map((task) => (
-          <div className="postIt-div" key={task.id}>
-            <span>{task.date || ""}</span>
-            <h3>{task.task}</h3>
-            <button className="btn-postIt" onClick={() => onDelete(task.id)}>
-              <i className="bi bi-trash3"></i> 
-            </button>
-            <button className="btn-postIt" onClick={() => onModify(task.id)}>
-              <i className="bi bi-pencil-square"></i>
-            </button>
-          </div>
-        ))
-      )  }
+      {postItTasks.map((task) => (
+        <div className="postIt-div" key={task.id}>
+          {/* ✅ Show edit form only for the selected task and only if the modal is NOT open */}
+          {editingTask && editingTask.id === task.id ? (
+            <EditTaskForm task={editingTask} onSave={onSave} onCancel={onCancel} />
+          ) : (
+            <>
+              <span>{task.date || ""}</span>
+              <h3>{task.task}</h3>
+              <button className="btn-postIt" onClick={() => onDelete(task.id)}>
+                <i className="bi bi-trash3"></i>
+              </button>
+              <button className="btn-postIt" onClick={() => onModify(task.id)}>
+                <i className="bi bi-pencil-square"></i>
+              </button>
+            </>
+          )}
+        </div>
+      ))}
     </>
   );
 };
-
+      
 export default PostItComponent;

@@ -12,14 +12,19 @@ const EditTaskForm: React.FC<EditTaskFormProps> = ({ task, onSave, onCancel }) =
 
   useEffect(() => {
     if (task) {
-      setEditedTask(task);
+      setEditedTask({ ...task }); 
     }
   }, [task]);
 
   if (!editedTask) return null;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditedTask({ ...editedTask, task: e.target.value });
+    if (editedTask) {
+      setEditedTask((prevTask) => ({
+        ...prevTask!,
+        task: e.target.value, 
+      }));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {

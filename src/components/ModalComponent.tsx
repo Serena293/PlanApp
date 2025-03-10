@@ -2,7 +2,6 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { Task } from "./TasksFormComponent";
 import EditTaskForm from "../components/EditTaskForm";
-// import { useState } from 'react';
 
 export interface ModalProps {
   show: boolean;
@@ -18,12 +17,13 @@ export interface ModalProps {
 const ModalComponent: React.FC<ModalProps> = ({
   tasks = [],
   editingTask,
+  selectedDate,
+  onModify,
+  onDelete,
+ onSave,
   ...props
 }) => {
-  const filteredTasks = tasks.filter(
-    (task) => task.date === props.selectedDate
-  );
-  console.log("Editing task in Modal:", editingTask);  // Debugging
+  const filteredTasks = tasks.filter((task) => task.date === selectedDate);
 
   return (
     <Modal
@@ -34,17 +34,14 @@ const ModalComponent: React.FC<ModalProps> = ({
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          {props.selectedDate
-            ? `Tasks for ${props.selectedDate}`
-            : "Inserire data"}
+          {selectedDate ? `Tasks for ${selectedDate}` : "Inserire data"}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-      
         {editingTask ? (
           <EditTaskForm
             task={editingTask}
-            onSave={props.onSave}
+            onSave={onSave}
             onCancel={props.onHide}
           />
         ) : filteredTasks.length > 0 ? (
@@ -53,10 +50,18 @@ const ModalComponent: React.FC<ModalProps> = ({
               <li key={task.id}>
                 <p>{task.task}</p>
 
-                <Button onClick={() => props.onDelete(task.id)}>
+                <Button
+                
+                  onClick={() => onDelete(task.id)}
+                >
                   Delete Task
                 </Button>
-                <Button onClick={() => props.onModify(task.id)}>Edit</Button>
+                <Button
+                
+                  onClick={() => onModify(task.id)}
+                >
+                  Edit
+                </Button>
               </li>
             ))}
           </ul>

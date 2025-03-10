@@ -35,9 +35,8 @@ const TasksFormComponent = ({ onAddTask }: TasksFormComponentProps) => {
       details,
     };
 
-    onAddTask(newTask); // Call the function from HomePage
+    onAddTask(newTask); 
 
-    // Reset form fields
     setTaskName("");
     setDate("");
     setIsPostIt(false);
@@ -74,7 +73,7 @@ const TasksFormComponent = ({ onAddTask }: TasksFormComponentProps) => {
 
       <Form.Group as={Row} className="mb-3">
         <Col sm={{ span: 10, offset: 2 }}>
-          <Button type="submit">Save</Button>
+        <Button type="submit" style={{ backgroundColor: '#C49A6C' }}>Save</Button>
         </Col>
       </Form.Group>
     </Form>
