@@ -1,4 +1,5 @@
 import { Task } from "./TasksFormComponent";
+import EditTaskForm from "../components/EditTaskForm";
 import "../assets/postIt.css";
 
 interface PostItProps {
@@ -6,16 +7,26 @@ interface PostItProps {
   onDelete: (taskId: string) => void;
   onModify: (taskId: string) => void;
   editingTask: Task | null;
+
+  onSave: (modifiedTask: Task) => void;
+  // onCancel: () => void;
 }
 
-const PostItComponent: React.FC<PostItProps> = ({ tasks = [], onDelete, onModify }) => {
+const PostItComponent: React.FC<PostItProps> = ({ tasks, onDelete, onModify, editingTask, onSave, onCancel }) => {
   // Filter out tasks that are marked as PostIts
   const postItTasks = tasks.filter((task) => task.isPostIt === true);
-  
+   
+  console.log(editingTask);
 
   return (
     <>
-      {postItTasks.length > 0 && (
+      {editingTask ?  (
+          <EditTaskForm
+            task={editingTask}
+            onSave={onSave}
+            onCancel={onCancel}
+          />
+        ) : (
         postItTasks.map((task) => (
           <div className="postIt-div" key={task.id}>
             <span>{task.date || ""}</span>

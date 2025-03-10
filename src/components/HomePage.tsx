@@ -9,6 +9,7 @@ const HomePage = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
+  // const [editingTask, setEditingTask] = useState<Task>();
 
   const retrieveTasks = (): Task[] => {
     return JSON.parse(localStorage.getItem("tasks") || "[]") as Task[];
@@ -40,10 +41,14 @@ const HomePage = () => {
   };
 
   const handleModify = (taskId: string) => {
+    console.log("Current tasks array:", tasks); // Debugging
+    console.log("Clicked Task ID:", taskId); // Debugging
     const taskToEdit = tasks.find((task) => task.id === taskId);
-    if (taskToEdit) {
-      setTaskToEdit(taskToEdit);
-    }
+    console.log("Selected task to edit:", taskToEdit, "home");
+    // if (taskToEdit) {
+    //   setTaskToEdit(taskToEdit);
+    // }
+    setTaskToEdit(taskToEdit || null);
   };
 
   const handleSaveModifiedTask = (modifiedTask: Task) => {
@@ -69,7 +74,8 @@ const HomePage = () => {
         tasks={tasks} 
         onDelete={handleDelete}
         onModify={handleModify}
-        onSave={()=>{}}
+        editingTask={taskToEdit}
+        onSave={saveTask}
         />
       </div>
 
