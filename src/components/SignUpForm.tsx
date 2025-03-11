@@ -1,7 +1,23 @@
+import { useState } from "react";
 import { Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const SignUpForm = () => {
+  const [profilePicture, setProfilePicture] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const handleProfilePictureChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setProfilePicture(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <section>
       <Form className="d-flex flex-column">
@@ -17,6 +33,16 @@ const SignUpForm = () => {
         <input type="password" min={8} max={25} required />
         <label>Username</label>
         <input type="text" min={2} max={25} required />
+
+        <label>Profile Picture</label>
+        <input 
+          type="file" 
+          accept="image/*" 
+          onChange={handleProfilePictureChange} 
+        />
+        {imagePreview && (
+          <img src={imagePreview} alt="Profile Preview" style={{ maxWidth: "100px", maxHeight: "100px", marginTop: "10px" }} />
+        )}
 
         <button type="submit" className="my-3">
           Sign up

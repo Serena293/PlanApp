@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import HomePage from './components/HomePage';
 import LoginPage from './components/LoginPage';
 import SignUpPage from './components/SingUpPage'; 
+import ForgotPassword from './components/ForgotPassword';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -36,6 +37,9 @@ function App() {
 
           {/* SignUp page */}
           <Route path="/signup" element={<SignUpPage />} />
+
+          {/* Reset password */}
+          <Route path="/forgot-password" element={<ForgotPassword />} />
 
         </Routes>
       </div>
