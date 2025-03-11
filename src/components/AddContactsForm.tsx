@@ -1,18 +1,26 @@
 import { Form } from "react-bootstrap";
 import { Contact } from "../components/ContactsComponent";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface AddContactsFormProps {
   onSave: (contact: Contact) => void;
+  editingContact: Contact | null;
 }
 
-const AddContactsForm = ({ onSave }: AddContactsFormProps) => {
+const AddContactsForm = ({ onSave, editingContact }: AddContactsFormProps) => {
   const [contact, setContact] = useState<Contact>({
     id: "",
     firstName: "",
     lastName: "",
     email: "",
   });
+
+ 
+  useEffect(() => {
+    if (editingContact) {
+      setContact(editingContact);
+    }
+  }, [editingContact]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -21,9 +29,8 @@ const AddContactsForm = ({ onSave }: AddContactsFormProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave({ ...contact, id: crypto.randomUUID() });
-    setContact({ id: "", firstName: "", lastName: "", email: "" });
-    console.log("new contact: ", contact);
+    onSave(contact);
+    setContact({ id: "", firstName: "", lastName: "", email: "" }); 
   };
 
   return (
@@ -31,7 +38,7 @@ const AddContactsForm = ({ onSave }: AddContactsFormProps) => {
       <label>First Name:</label>
       <input
         type="text"
-        name="firstName" 
+        name="firstName"
         minLength={2}
         maxLength={25}
         value={contact.firstName}
@@ -41,10 +48,11 @@ const AddContactsForm = ({ onSave }: AddContactsFormProps) => {
       <label>Last Name:</label>
       <input
         type="text"
-        name="lastName" 
+        name="lastName"
         minLength={2}
         maxLength={25}
-        value={contact.lastName} 
+        value={contact.lastName}
+        onChange={handleChange}
       />
       <label>Email:</label>
       <input
@@ -52,11 +60,10 @@ const AddContactsForm = ({ onSave }: AddContactsFormProps) => {
         name="email"
         minLength={2}
         maxLength={25}
-        value={contact.email} 
+        value={contact.email}
         onChange={handleChange}
         required
       />
-
       <button type="submit" className="mt-2">
         Save contact
       </button>
