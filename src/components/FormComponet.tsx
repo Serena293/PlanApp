@@ -1,5 +1,7 @@
 import { Col, Form, Row } from "react-bootstrap";
 import "../assets/LoginForm.css";
+import { Link } from "react-router-dom";
+
 // import { useState } from "react";
 
 interface FormProps {
@@ -59,6 +61,8 @@ const FormComponent = (props: FormProps) => {
           {props.btnText}
         </button>
       </Form>
+      <Link to="/signup">Don't have an account? Sign up</Link>
+
     </section>
   );
 };

@@ -9,7 +9,7 @@ const monthNames: string[] = [
 
 const daysOfTheWeek: string[] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-const CalendarComponent = ({ taskDates = [], onDateClick }: { taskDates?: string[], onDateClick: (date: string) => void }) => {
+const CalendarComponent = ({ taskDates = [], onDateClick }: { taskDates?: string[], onDateClick?: (date: string) => void }) => {
   const now = new Date();
   const [currentDate, setCurrentDate] = useState<Date>(now);
 

@@ -7,9 +7,12 @@ import "../assets/HomePage.css";
 import NavbarComponent from "./NavbarComponent";
 import Footer from "./FooterComponent";
 import ContactsComponent from "./ContactsComponent";
-import AddContactsForm from "./AddContactsForm";
 
-const HomePage = () => {
+interface HomePageProps {
+  onLogout: () => void;
+}
+
+const HomePage = ({ onLogout }: HomePageProps) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
@@ -72,7 +75,7 @@ const HomePage = () => {
   return (
     <>
       <section className="fluid w-100 vh-100 d-flex flex-column">
-        <NavbarComponent />
+        <NavbarComponent onClick={onLogout} />
         <div className="d-flex justify-content-around w-100">
           <CalendarComponent
             taskDates={tasks.map((task) => task.date)}

@@ -4,7 +4,12 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import "../assets/navbar.css";
 
-function NavbarComponent() {
+interface NavbarComponentProps {
+  onClick: () => void
+}
+
+
+function NavbarComponent({onClick}: NavbarComponentProps) {
   return (
     <Navbar collapseOnSelect expand="lg" className="bg-color mb-2 p-0">
       <Container className='d-flex bg-color'>
@@ -22,7 +27,7 @@ function NavbarComponent() {
               <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.4" onClick={onClick}>Logout</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
