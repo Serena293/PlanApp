@@ -6,6 +6,8 @@ import ModalComponent from "../components/ModalComponent";
 import "../assets/HomePage.css";
 import NavbarComponent from "./NavbarComponent";
 import Footer from "./FooterComponent";
+import ContactsComponent from "./ContactsComponent";
+import AddContactsForm from "./AddContactsForm";
 
 const HomePage = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -100,7 +102,10 @@ const HomePage = () => {
           editingTask={taskToEdit}
         
         />
-
+        <div className="d-flex m-5  justify-content-around">
+       <ContactsComponent ></ContactsComponent>
+       
+       </div>
         <Footer/>
       </section>
     </>
