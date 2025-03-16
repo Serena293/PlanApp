@@ -26,7 +26,7 @@ const PostItComponent: React.FC<PostItProps> = ({ tasks, onDelete, onModify, edi
     <>
       {postItTasks.map((task) => (
         <div className="postIt-div" key={task.id}>
-          {/* ✅ Show edit form only for the selected task and only if the modal is NOT open */}
+
           {editingTask && editingTask.id === task.id ? (
             <EditTaskForm task={editingTask} onSave={onSave} onCancel={onCancel} />
           ) : (

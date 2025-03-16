@@ -74,12 +74,14 @@ const FormComponent = (props: FormProps) => {
           {props.btnText}
         </button>
       </Form>
-      <div>
-        <span className="d-felex flex-column">
+      <div className="d-felex flex-column mt-3">
+        <span >
           {" "}
           Don't have an account?<Link to="/signup"> Sign up</Link>
         </span>
+        <div>
         <Link to="/forgot-password">Forgot password?</Link>
+        </div>
       </div>
     </section>
   );
