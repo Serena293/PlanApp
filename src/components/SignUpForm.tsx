@@ -45,8 +45,7 @@ const SignUpForm = () => {
       console.log("📩 Response Status:", response.status);
 
       if (!response.ok) {
-        // Read error response
-        const errorText = await response.text();
+           const errorText = await response.text();
         throw new Error(`Registration failed: ${errorText}`);
       }
 

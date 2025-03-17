@@ -2,8 +2,6 @@ import { Col, Form, Row } from "react-bootstrap";
 import "../assets/LoginForm.css";
 import { Link } from "react-router-dom";
 
-// import { useState } from "react";
-
 interface FormProps {
   formName: string;
   controlFirstId: string;
@@ -18,19 +16,14 @@ interface FormProps {
   secondValue: string;
   setFirstValue: (value: string) => void;
   setSecondValue: (value: string) => void;
+  handleSubmit: (e: React.FormEvent) => void; // Receiving handleSubmit as prop
 }
 
 const FormComponent = (props: FormProps) => {
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // console.log("First Input:", props.firstValue);
-    // console.log("Second Input:", props.secondValue);
-  };
-
   return (
     <section className="d-flex flex-column">
       <h3 className="text-center">{props.formName}</h3>
-      <Form className="d-flex flex-column" onSubmit={handleSubmit}>
+      <Form className="d-flex flex-column" onSubmit={props.handleSubmit}>
         <Form.Group
           as={Row}
           className="mb-3 d-flex flex-column"
@@ -75,12 +68,12 @@ const FormComponent = (props: FormProps) => {
         </button>
       </Form>
       <div className="d-felex flex-column mt-3">
-        <span >
+        <span>
           {" "}
           Don't have an account?<Link to="/signup"> Sign up</Link>
         </span>
         <div>
-        <Link to="/forgot-password">Forgot password?</Link>
+          <Link to="/forgot-password">Forgot password?</Link>
         </div>
       </div>
     </section>
