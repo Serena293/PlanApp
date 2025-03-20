@@ -1,7 +1,7 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { Task } from "./TasksFormComponent";
-import EditTaskForm from "../components/EditTaskForm";
+import EditTaskForm from "./EditTaskForm";
 
 export interface ModalProps {
   show: boolean;

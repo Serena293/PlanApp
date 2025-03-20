@@ -26,9 +26,9 @@ const TasksFormComponent = ({ onAddTask }: TasksFormComponentProps) => {
 
   const saveTask = (e: React.FormEvent) => {
     e.preventDefault();
-
+    console.log("Task Submitted");
     const newTask: Task = {
-      id: uuidv4(),
+       id: uuidv4(),
       task: taskName,
       date,
       isPostIt,

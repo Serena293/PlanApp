@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../assets/CalendarComponent.css";
+import "../../assets/CalendarComponent.css";
 // import ModalComponent from '../components/ModalComponent'
 
 const monthNames: string[] = [

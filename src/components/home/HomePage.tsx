@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
-import CalendarComponent from "../components/CalenderComponent";
+import CalendarComponent from "../sharedComponets/CalenderComponent";
 import TasksFormComponent, { Task } from "./TasksFormComponent";
 import Board from "./Board";
-import ModalComponent from "../components/ModalComponent";
-import "../assets/HomePage.css";
-import NavbarComponent from "./NavbarComponent";
-import Footer from "./FooterComponent";
+import ModalComponent from "./ModalComponent";
+import "../../assets/HomePage.css";
+import NavbarComponent from "../sharedComponets/NavbarComponent";
+import Footer from "../sharedComponets/FooterComponent";
 import ContactsComponent from "./ContactsComponent";
+
 
 interface HomePageProps {
   onLogout: () => void;
@@ -18,20 +19,70 @@ const HomePage = ({ onLogout }: HomePageProps) => {
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
   // const [editingTask, setEditingTask] = useState<Task>();
 
-  const retrieveTasks = (): Task[] => {
-    return JSON.parse(localStorage.getItem("tasks") || "[]") as Task[];
+  const retrieveTasks = async (): Promise<Task[]> => {
+    const token = localStorage.getItem("token");
+    //console.log("📌 Token in localStorage:", token);
+
+    if (!token) {
+      console.error("🚨 No token found, user not authenticated!");
+      return [];
+    }
+  
+    try {
+      const response = await fetch("http://localhost:8080/api/tasks", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+  
+      if (!response.ok) throw new Error("Failed to retrieve tasks");
+  
+      return await response.json(); 
+    } catch (error) {
+      console.error("🚨 Error retrieving tasks:", error);
+      return []; 
+    }
   };
+  
 
   useEffect(() => {
-    setTasks(retrieveTasks());
+    retrieveTasks().then(setTasks); 
   }, []);
+  
 
-  const saveTask = (newTask: Task) => {
-    const updatedTasks = [...tasks, newTask];
-    setTasks(updatedTasks);
-    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+  const saveTask = async (newTask: Task) => {
+
+    const token = localStorage.getItem("token"); 
+    console.log("📌 Token being sent:", token); // ✅ Debug token
+    if (!token) {
+      console.error("🚨 No token found, user not authenticated!");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:8080/api/tasks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`, 
+        },
+        body: JSON.stringify(newTask),
+      });
+  
+      if (!response.ok) throw new Error("Failed to save task");
+  
+      const savedTask = await response.json();
+  
+      const updatedTasks = [...tasks, savedTask]; // Use response data
+      setTasks(updatedTasks);
+      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    } catch (error) {
+      console.error("🚨 Error saving task:", error);
+    }
   };
-
+  
   const handleDateClick = (date: string) => {
     setSelectedDate(date);
   };

@@ -1,6 +1,6 @@
 import { Task } from "./TasksFormComponent";
-import EditTaskForm from "../components/EditTaskForm";
-import "../assets/postIt.css";
+import EditTaskForm from "../home/EditTaskForm";
+import "../../assets/postIt.css";
 
 interface PostItProps {
   tasks: Task[];

@@ -1,6 +1,6 @@
 import React from "react";
-import "../assets/Board.css";
-import PostItComponent from "../components/PostItComponent";
+import "../../assets/Board.css";
+import PostItComponent from "../home/PostItComponent";
 import { Task } from "./TasksFormComponent";
 
 const Board: React.FC<{

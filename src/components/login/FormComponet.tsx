@@ -1,5 +1,5 @@
 import { Col, Form, Row } from "react-bootstrap";
-import "../assets/LoginForm.css";
+import "../../assets/LoginForm.css";
 import { Link } from "react-router-dom";
 
 interface FormProps {
@@ -16,7 +16,7 @@ interface FormProps {
   secondValue: string;
   setFirstValue: (value: string) => void;
   setSecondValue: (value: string) => void;
-  handleSubmit: (e: React.FormEvent) => void; // Receiving handleSubmit as prop
+  handleSubmit: (e: React.FormEvent) => void; 
 }
 
 const FormComponent = (props: FormProps) => {
@@ -35,7 +35,7 @@ const FormComponent = (props: FormProps) => {
           <Col sm="10">
             <Form.Control
               placeholder={props.firstPlaceholder}
-              value={props.firstValue} // Controlled input
+              value={props.firstValue} 
               onChange={(e) => props.setFirstValue(e.target.value)}
             />
           </Col>

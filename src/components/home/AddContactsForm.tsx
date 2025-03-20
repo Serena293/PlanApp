@@ -1,5 +1,5 @@
 import { Form } from "react-bootstrap";
-import { Contact } from "../components/ContactsComponent";
+import { Contact } from "./ContactsComponent";
 import { useState, useEffect } from "react";
 
 interface AddContactsFormProps {
