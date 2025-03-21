@@ -2,29 +2,36 @@ import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./components/home/HomePage";
 import LoginPage from "./components/login/LoginPage";
-import SignUpPage from "./components/login/SingUpPage";
+import SignUpPage from "./components/login/SignUpPage"; // ✅ Fixed typo
 import ForgotPassword from "./components/login/ForgotPassword";
+import PrivateRoute from "./PrivateRoutes";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("jwt");
-    setIsLoggedIn(!!token); // Convert token existence to boolean
+    const checkAuth = () => {
+      const token = localStorage.getItem("token");
+      setIsLoggedIn(!!token);
+    };
+
+    checkAuth();
+    window.addEventListener("storage", checkAuth);
+    return () => window.removeEventListener("storage", checkAuth);
   }, []);
 
   const handleLogin = (token: string) => {
-    localStorage.setItem("jwt", token);
+    localStorage.setItem("token", token);
     setIsLoggedIn(true);
   };
 
   const handleSignUp = (token: string) => {
-    localStorage.setItem("jwt", token);
+    localStorage.setItem("token", token);
     setIsLoggedIn(true);
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("jwt");
+    localStorage.removeItem("token");
     setIsLoggedIn(false);
   };
 
@@ -32,19 +39,15 @@ function App() {
     <Router>
       <div className="d-flex justify-content-around w-100 align-items-center vh-100">
         <Routes>
-          {/* Login: Redirect to home if already logged in */}
           <Route path="/login" element={isLoggedIn ? <Navigate to="/home" /> : <LoginPage onLogin={handleLogin} />} />
-
-          {/* Sign Up: Redirect to home after signing up */}
           <Route path="/signup" element={isLoggedIn ? <Navigate to="/home" /> : <SignUpPage onSignUp={handleSignUp} />} />
-
-          {/* Forgot Password remains accessible */}
           <Route path="/forgot-password" element={<ForgotPassword />} />
 
-          {/* Home Page: If logged in, show HomePage; if not, redirect to login */}
-          <Route path="/home" element={isLoggedIn ? <HomePage onLogout={handleLogout} /> : <Navigate to="/login" />} />
+          {/* ✅ Cleaner Protected Route Handling */}
+          <Route element={<PrivateRoute isAuthenticated={isLoggedIn} />}>
+            <Route path="/home" element={<HomePage onLogout={handleLogout} />} />
+          </Route>
 
-          {/* Default route: If logged in, go to home; otherwise, go to login */}
           <Route path="/" element={isLoggedIn ? <Navigate to="/home" /> : <Navigate to="/login" />} />
         </Routes>
       </div>

@@ -8,7 +8,6 @@ import NavbarComponent from "../sharedComponets/NavbarComponent";
 import Footer from "../sharedComponets/FooterComponent";
 import ContactsComponent from "./ContactsComponent";
 
-
 interface HomePageProps {
   onLogout: () => void;
 }
@@ -17,110 +16,164 @@ const HomePage = ({ onLogout }: HomePageProps) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
-  // const [editingTask, setEditingTask] = useState<Task>();
 
+  // Funzione per recuperare i task dal backend
   const retrieveTasks = async (): Promise<Task[]> => {
     const token = localStorage.getItem("token");
-    //console.log("📌 Token in localStorage:", token);
 
     if (!token) {
       console.error("🚨 No token found, user not authenticated!");
       return [];
     }
-  
+
     try {
-      const response = await fetch("http://localhost:8080/api/tasks", {
+      const response = await fetch("http://localhost:8080/api/tasks/user-tasks", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
-  
-      if (!response.ok) throw new Error("Failed to retrieve tasks");
-  
-      return await response.json(); 
+
+      if (!response.ok) {
+        throw new Error("Failed to retrieve tasks");
+      }
+
+      const tasks = await response.json();
+      console.log("Retrieved tasks from backend:", tasks);
+      return tasks;
     } catch (error) {
       console.error("🚨 Error retrieving tasks:", error);
-      return []; 
+      return [];
     }
   };
-  
 
+  // Carica i task all'avvio della pagina
   useEffect(() => {
-    retrieveTasks().then(setTasks); 
+    retrieveTasks().then(setTasks);
   }, []);
-  
 
-  const saveTask = async (newTask: Task) => {
+  // Funzione per salvare un nuovo task
+  const saveTask = async (newTask: Omit<Task, "id">) => {
+    const token = localStorage.getItem("token");
 
-    const token = localStorage.getItem("token"); 
-    console.log("📌 Token being sent:", token); // ✅ Debug token
     if (!token) {
       console.error("🚨 No token found, user not authenticated!");
       return;
     }
 
     try {
-      const response = await fetch("http://localhost:8080/api/tasks", {
+      const response = await fetch("http://localhost:8080/api/tasks/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`, 
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(newTask),
       });
-  
-      if (!response.ok) throw new Error("Failed to save task");
-  
+
+      if (!response.ok) {
+        throw new Error("Error saving task");
+      }
+
       const savedTask = await response.json();
-  
-      const updatedTasks = [...tasks, savedTask]; // Use response data
-      setTasks(updatedTasks);
-      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+      console.log("Saved task:", savedTask);
+
+      // Aggiungi il task alla lista dei task
+      setTasks((prevTasks) => [...prevTasks, savedTask]);
     } catch (error) {
       console.error("🚨 Error saving task:", error);
     }
   };
-  
+
+  // Funzione per gestire il click sulla data
   const handleDateClick = (date: string) => {
     setSelectedDate(date);
   };
 
+  // Funzione per chiudere il modal
   const handleCloseModal = () => {
     setSelectedDate(null);
     setTaskToEdit(null);
   };
 
-
+  // Funzione per annullare l'edit di un task
   const handleCancelEdit = () => {
-    setTaskToEdit(null);  //todo: make it shorter? make it one fuction with handleCloseModal
+    setTaskToEdit(null);
   };
 
-  const handleDelete = (taskId: string) => {
-    const updatedTasks = tasks.filter((task) => task.id !== taskId);
-    setTasks(updatedTasks);
-    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+  // Funzione per eliminare un task
+  const handleDelete = async (taskId: string | undefined) => {
+    if (!taskId) return;
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      console.error("🚨 No token found, user not authenticated!");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8080/api/tasks/${taskId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Error deleting task");
+      }
+
+      // Rimuove il task dalla lista
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+    } catch (error) {
+      console.error("🚨 Error deleting task:", error);
+    }
   };
 
-  const handleModify = (taskId: string) => {
-    // console.log("Current tasks array:", tasks); // Debugging
-    // console.log("Clicked Task ID:", taskId); // Debugging
+  // Funzione per modificare un task
+  const handleModify = (taskId: string | undefined) => {
     const taskToEdit = tasks.find((task) => task.id === taskId);
-    // console.log("Selected task to edit:", taskToEdit, "home");
-    // if (taskToEdit) {
-    //   setTaskToEdit(taskToEdit);
-    // }
     setTaskToEdit(taskToEdit || null);
   };
 
-  const handleSaveModifiedTask = (modifiedTask: Task) => {
-    const updatedTasks = tasks.map((task) =>
-      task.id === modifiedTask.id ? modifiedTask : task
-    );
-    setTasks(updatedTasks);
-    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-    setTaskToEdit(null);
+  // Funzione per salvare un task modificato
+  const handleSaveModifiedTask = async (modifiedTask: Task) => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      console.error("🚨 No token found, user not authenticated!");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8080/api/tasks/${modifiedTask.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(modifiedTask),
+      });
+
+      if (!response.ok) {
+        throw new Error("Error updating task");
+      }
+
+      const updatedTask = await response.json();
+      console.log("Updated task:", updatedTask);
+
+      // Aggiorna la lista dei task con il task modificato
+      setTasks((prevTasks) =>
+        prevTasks.map((task) => (task.id === updatedTask.id ? updatedTask : task))
+      );
+
+      setTaskToEdit(null); // Chiudi il modal dopo il salvataggio
+    } catch (error) {
+      console.error("🚨 Error saving modified task:", error);
+    }
   };
 
   return (
@@ -141,7 +194,7 @@ const HomePage = ({ onLogout }: HomePageProps) => {
             onModify={handleModify}
             editingTask={taskToEdit}
             onSave={handleSaveModifiedTask}
-            onCancel = {handleCancelEdit}
+            onCancel={handleCancelEdit}
           />
         </div>
 
@@ -154,13 +207,11 @@ const HomePage = ({ onLogout }: HomePageProps) => {
           onModify={handleModify}
           onSave={handleSaveModifiedTask}
           editingTask={taskToEdit}
-        
         />
-        <div className="d-flex m-5  justify-content-around">
-       <ContactsComponent ></ContactsComponent>
-       
-       </div>
-        <Footer/>
+        <div className="d-flex m-5 justify-content-around">
+          <ContactsComponent />
+        </div>
+        <Footer />
       </section>
     </>
   );

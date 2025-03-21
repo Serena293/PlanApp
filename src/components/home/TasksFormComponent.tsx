@@ -4,10 +4,10 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useState } from "react";
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 
 export interface Task {
-  id: string;
+  id?: string;
   task: string;
   date: string;
   isPostIt: boolean;
@@ -19,6 +19,8 @@ interface TasksFormComponentProps {
 }
 
 const TasksFormComponent = ({ onAddTask }: TasksFormComponentProps) => {
+
+  
   const [taskName, setTaskName] = useState("");
   const [date, setDate] = useState("");
   const [isPostIt, setIsPostIt] = useState(false);
@@ -26,9 +28,9 @@ const TasksFormComponent = ({ onAddTask }: TasksFormComponentProps) => {
 
   const saveTask = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Task Submitted");
+    // console.log("Task Submitted");
     const newTask: Task = {
-       id: uuidv4(),
+      //  id: uuidv4(),
       task: taskName,
       date,
       isPostIt,
@@ -42,6 +44,7 @@ const TasksFormComponent = ({ onAddTask }: TasksFormComponentProps) => {
     setIsPostIt(false);
     setDetails("");
   };
+    
 
   return (
     <Form onSubmit={saveTask}>
@@ -73,7 +76,7 @@ const TasksFormComponent = ({ onAddTask }: TasksFormComponentProps) => {
 
       <Form.Group as={Row} className="mb-3">
         <Col sm={{ span: 10, offset: 2 }}>
-        <Button type="submit" style={{ backgroundColor: '#C49A6C' }}>Save</Button>
+        <Button type="submit" style={{ backgroundColor: '#C49A6C' }} >Save</Button>
         </Col>
       </Form.Group>
     </Form>
@@ -81,3 +84,4 @@ const TasksFormComponent = ({ onAddTask }: TasksFormComponentProps) => {
 };
 
 export default TasksFormComponent;
+

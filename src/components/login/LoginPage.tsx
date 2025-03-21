@@ -10,13 +10,14 @@ interface LoginPageProps {
 const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) =>  {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // ✅ Use navigate from react-router
+  const navigate = useNavigate();
 
   // Handle the submit action
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); 
-    console.log("Attempting login with username:", username); // Debug login attempt
 
+    console.log("Attempting login with username:", username);
+ 
     try {
       const response = await fetch("http://localhost:8080/api/auth/login", {
         method: "POST",
@@ -26,29 +27,27 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) =>  {
         body: JSON.stringify({ username, password }),
       });
 
-      console.log("Login response:", response); // Log the response
-      // Set a breakpoint here to inspect the response object
-      
+      console.log("Login response:", response); 
+
       if (!response.ok) {
         throw new Error("Login failed");
       }
 
       const token = await response.text();
-      console.log("Received token:", token); // Log the token received
+
+      console.log("Received token:", token); 
+
       onLogin(token)
 
-       // Set a breakpoint here to inspect the token before storing it
-
+      
       // ✅ Store the token in localStorage
       localStorage.setItem("token", token);
-      console.log("✅ Stored token:", localStorage.getItem("token")); // Debug logging
-
-      // ✅ Redirect user after successful login
-      console.log("🚀 Navigating to /home...");
+      console.log("✅ Stored token:", localStorage.getItem("token")); 
+   
       navigate("/home");
-      //window.location.reload(); 
+    
     } catch (error) {
-      console.error("🚨 Login error:", error);
+      console.error("Login error:", error);
       alert("❌ Login failed! Check your username and password.");
     }
   };

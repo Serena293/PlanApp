@@ -1,4 +1,4 @@
-import SignUpForm from "../login/SignUpForm";
+import SignUpForm from "./SignUpForm";
 
 
 interface SignUpPageProps {
